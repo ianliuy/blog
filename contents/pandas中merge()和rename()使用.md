@@ -8,7 +8,7 @@ DataFrame.merge(self, right, how='inner', on=None, left_on=None, right_on=None, 
 
 “join columns with other dataframe either on index or on a key column”
 
-Parameters
+**Parameters**
 
 \-\-\-\-\-\-\-\-\-\-
 
@@ -36,7 +36,7 @@ indicator：不懂
 
 validate：“1:1”检查是否一一对应, "1:m"检查左边一一对应, "m:1"检查右边一一对一, "m:m"可以用，但不检查
 
-Returns
+**Returns**
 
 \-\-\-\-\-\-\-\-\-\-
 
@@ -52,7 +52,7 @@ DataFrame.rename(self, mapper=None, index=None, columns=None, axis=None, copy=Tr
 
 "Alter axis labels"
 
-Parameters
+**Parameters**
 
 \-\-\-\-\-\-\-\-\-\-
 
@@ -70,7 +70,7 @@ level: 跟multiIndex相关的
 
 errors: 默认ignore，但是也可以raise (KeyError)
 
-Returns
+**Returns**
 
 \-\-\-\-\-\-\-\-\-\-
 
@@ -78,7 +78,7 @@ DataFrame
 
 DataFrame with the renamed axis labels
 
-Raises
+**Raises**
 
 \-\-\-\-\-\-\-\-\-\-
 
