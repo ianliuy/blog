@@ -42,7 +42,7 @@ jupyter notebook --ip=0.0.0.0(optional) --port=7777 --allow-root(optional) --no-
 --time 显示目录下的修改时间
 -S --separate-dirs 不计算子文件夹
 ```
-example
+*example*
 
 ```bash
 root@XXX:~/XXX# du -sh --time *
