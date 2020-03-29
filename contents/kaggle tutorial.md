@@ -1,4 +1,4 @@
-# kaggel tutorial
+# kaggle tutorial
 
 1. kaggle解决问题流程
 

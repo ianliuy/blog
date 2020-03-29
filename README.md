@@ -14,3 +14,5 @@ Make a mark
 6. [linux运维](https://github.com/yiyangianliu/blog/blob/master/contents/linux%E8%BF%90%E7%BB%B4.md)
 
 7. [screen增删查改](https://github.com/yiyangianliu/blog/blob/master/contents/screen%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9.md)
+
+8. [kaggle tutorial](https://github.com/yiyangianliu/blog/blob/master/contents/kaggle%20tutorial.md)
