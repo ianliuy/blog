@@ -2,19 +2,19 @@
 ## 对tf-idf的理解
 tf-idf是由两个单词组合而成，即tf和idf。tf的意思是词频term frequency，idf的意思是逆文本频率inverse document frequency。
 
-**tf的公式：**<a href="https://www.codecogs.com/eqnedit.php?latex=tf_{i,j}&space;=&space;\frac{n_{i,j}}{\sum_{k}^{&space;}n_{k,j}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?tf_{i,j}&space;=&space;\frac{n_{i,j}}{\sum_{k}^{&space;}n_{k,j}}" title="tf_{i,j} = \frac{n_{i,j}}{\sum_{k}^{ }n_{k,j}}" /></a>
+**tf的公式：**
+<img src="https://latex.codecogs.com/gif.latex?tf_{i,j}&space;=&space;\frac{n_{i,j}}{\sum_{k}^{&space;}n_{k,j}}" title="tf_{i,j} = \frac{n_{i,j}}{\sum_{k}^{ }n_{k,j}}" />
 
-解释：在第j个文档中，第i个词的<a href="https://www.codecogs.com/eqnedit.php?latex=tf_{i,j}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?tf_{i,j}" title="tf_{i,j}" /></a>是这个单词出现的次数<a href="https://www.codecogs.com/eqnedit.php?latex=n_{i,j}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?n_{i,j}" title="n_{i,j}" /></a>与整个文章的单词总数<a href="https://www.codecogs.com/eqnedit.php?latex=\sum_{k}n_{k,j}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\sum_{k}n_{k,j}" title="\sum_{k}n_{k,j}" /></a>之比
+解释：在第j个文档中，第i个词的<img src="https://latex.codecogs.com/gif.latex?tf_{i,j}" title="tf_{i,j}" />是这个单词出现的次数<img src="https://latex.codecogs.com/gif.latex?n_{i,j}" title="n_{i,j}" />与整个文章的单词总数<img src="https://latex.codecogs.com/gif.latex?\sum_{k}n_{k,j}" title="\sum_{k}n_{k,j}" />之比
 
-**idf的公式：**<a href="https://www.codecogs.com/eqnedit.php?latex=idf_{i}=\lg&space;\frac{\left|D\right&space;|}{\left&space;|&space;\left&space;\{&space;j:t_{i}\in&space;d_{j}&space;\right&space;\}&space;\right&space;|}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?idf_{i}=\lg&space;\frac{\left|D\right&space;|}{\left&space;|&space;\left&space;\{&space;j:t_{i}\in&space;d_{j}&space;\right&space;\}&space;\right&space;|}" title="idf_{i}=\lg \frac{\left|D\right |}{\left | \left \{ j:t_{i}\in d_{j} \right \} \right |}" /></a>
+**idf的公式：**<img src="https://latex.codecogs.com/gif.latex?idf_{i}=\lg&space;\frac{\left|D\right&space;|}{\left&space;|&space;\left&space;\{&space;j:t_{i}\in&space;d_{j}&space;\right&space;\}&space;\right&space;|}" title="idf_{i}=\lg \frac{\left|D\right |}{\left | \left \{ j:t_{i}\in d_{j} \right \} \right |}" />
 
-解释：D是document总数，<a href="https://www.codecogs.com/eqnedit.php?latex=\left&space;\{&space;j:t_{i}\in&space;d_{j}&space;\right&space;\}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\left&space;\{&space;j:t_{i}\in&space;d_{j}&space;\right&space;\}" title="\left \{ j:t_{i}\in d_{j} \right \}" /></a>表示所有含term_i的文件的数量
+解释：D是document总数，<img src="https://latex.codecogs.com/gif.latex?\left&space;\{&space;j:t_{i}\in&space;d_{j}&space;\right&space;\}" title="\left \{ j:t_{i}\in d_{j} \right \}" />表示所有含term_i的文件的数量
 
-**tf-idf的公式：**<a href="https://www.codecogs.com/eqnedit.php?latex=tfidf_{i,j}&space;=&space;tf_{i,j}&space;\times&space;idf_{i}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?tfidf_{i,j}&space;=&space;tf_{i,j}&space;\times&space;idf_{i}" title="tfidf_{i,j} = tf_{i,j} \times idf_{i}" /></a>
+**tf-idf的公式：**<img src="https://latex.codecogs.com/gif.latex?tfidf_{i,j}&space;=&space;tf_{i,j}&space;\times&space;idf_{i}" title="tfidf_{i,j} = tf_{i,j} \times idf_{i}" />
 
 **tf-idf的思想：** 一个单词在某个文章中出现的次数越多，那么他越像关键词，那么tf就越高。一个单词在越少的文章中出现，那么它越特殊，idf就越高。tf高idf也高的单词就很适合做特征
 
-（markdown加粗:** ** ；lg:以10为底的log）
 
 ----
 
