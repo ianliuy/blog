@@ -1,3 +1,9 @@
+# kaggle房价预测案例-base
+
+> reference: https://www.kaggle.com/c/house-prices-advanced-regression-techniques
+
+> tutorials: [【机器学习/Kaggle教学】kaggle案例实战班](https://www.bilibili.com/video/BV19b411z73K?p=2)
+
 ```python
 import numpy as np
 import pandas as pd # 变成类似数据库的形式存储
@@ -21,19 +27,6 @@ train_df.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -269,19 +262,6 @@ all_df.tail(10)
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -640,19 +620,7 @@ pd.get_dummies(all_df['MSSubClass'], prefix = 'MSSubClass').head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
