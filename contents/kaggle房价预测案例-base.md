@@ -2,7 +2,7 @@
 
 > reference: https://www.kaggle.com/c/house-prices-advanced-regression-techniques
 
-> tutorials: [【机器学习/Kaggle教学】kaggle案例实战班](https://www.bilibili.com/video/BV19b411z73K?p=2)
+> tutorials: https://www.bilibili.com/video/BV19b411z73K?p=2
 
 ```python
 import numpy as np
