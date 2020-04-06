@@ -4,6 +4,63 @@
 
 > tutorials: https://www.bilibili.com/video/BV19b411z73K?p=2
 
+## （对我的来说的新）知识点：
+```python
+np.log1p()数据预处理 / 
+pandas.value_counts() 数据预览 / 
+pandas.get_dummies() 把categorical数据变为numerical / 
+pandas.DataFrame.isnull().sum().sort_values(ascending = False).head(15) 查看缺失数据 /
+```
+### 用平均填充缺失 
+```
+mean_cols = pandas.DataFrame.mean() 取各列平均 +
+pandas.DataFrame.fillna(mean_cols) /
+```
+```
+pandas.DataFrame.isnull().sum().sum() 总的缺失值 /
+np.logspace() 没搞懂 /
+```
+### 标准化 Standardization (Z-score Normalization)
+
+reference: https://en.wikipedia.org/wiki/Feature_scaling#Standardization_(Z-score_Normalization)
+```
+numeric_cols = df.columns[df.dtypes != 'object'] 找到numerical列 +
+
+mean = all_dummy_df.loc[:, numeric_cols].mean() 算出各列平均值 +
+
+std = all_dummy_df.loc[:, numeric_cols].std() 算出各列标准差 
+// std = standard deviation = sqrt(mean(abs(x - x.mean())**2)) +
+
+df.loc[:, numeric_cols] = (df.loc[:, numeric_cols] - mean) / std 
+// 标准正态分布 = standard normal distribution, which means 
+// Z = (X - μ) / σ, where μ = X.mean() and σ = X.std()
+```
+
+```python
+from sklearn.linear_model import Ridge
+Ridge分类器
+
+
+from sklearn.model_selection import cross_val_score
+# 把所有的df变成numpy array， 这一步不是很必要，但是与sklearn更加贴合
+X_train = dummy_train_df.values
+X_test = dummy_test_df.values
+# 评价方法：交叉验证，用sklearn自带的方法进行验证
+alphas = np.logspace(-3, 2, 50)
+test_scores = []
+for alpha in alphas:
+    clf = Ridge(alpha)
+    test_score = np.sqrt(-cross_val_score(clf, X_train, y_train, cv = 10, scoring = 'neg_mean_squared_error'))
+    test_scores.append(np.mean(test_score))
+# 存下所有的CV值，看哪个alpha更好（调参数）
+import matplotlib.pyplot as plt
+%matplotlib inline
+plt.plot(alphas, test_scores)
+plt.title('Alpha vs CV Error')
+```
+
+
+
 ```python
 import numpy as np
 import pandas as pd # 变成类似数据库的形式存储
