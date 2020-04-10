@@ -126,10 +126,21 @@ useage: `io.open(name, encoding = 'utf-8').read()`
 
 ```python
 """
-    zip(iter1 [,iter2 [...]]) --> zip object
-    
-    返回一个zip对象，其.__next__()方法返回一个元组，其中第i个元素来自第i个可迭代参数。 .__next__()方法继续运行，直到参数序列中最短的可迭代耗尽, 直到raises StopIteration.
+zip(iter1 [,iter2 [...]]) --> zip object
+
+返回一个zip对象，其.__next__()方法返回一个元组，其中第i个元素来自第i个可迭代参数。 .__next__()方法继续运行，直到参数序列中最短的可迭代耗尽, 直到raises StopIteration.
     """
+```
+example
+```python
+p = [[1,2,3],[4,5,6]]
+>>>d=zip(p)
+>>>list(d)
+[([1, 2, 3],), ([4, 5, 6],)]
+
+>>>d=zip(*p)
+>>>list(d)
+[(1, 4), (2, 5), (3, 6)]
 ```
 
 ## tuple[-1]
@@ -199,6 +210,460 @@ Arguments
 """
 
 ```
+## tf.keras.preprocessing.sequence.pad_sequences(sequences, maxlen=None, dtype='int32',                  padding='pre', truncating='pre', value=0.):
+
+```python
+tf.keras.preprocessing.sequence.pad_sequences(sequences, 
+    maxlen=None, 
+    dtype='int32',                  
+    padding='pre', 
+    truncating='pre', 
+    value=0.):
+"""将序列填充到相同的长度.
+
+此函数将“ num_samples”个序列的列表（整数列表）转换为形状为“（num_samples，num_timesteps）”的二维Numpy数组。 如果提供了maxlen，那么num_timesteps为maxlen参数，否则为最长序列的长度。
+
+比num_timesteps短的序列在末尾用value填充。
+
+长度大于num_timesteps的序列将被截断，以使其适合所需的长度。 填充或截断发生的位置分别由参数“ padding”和“ truncating”确定。
+
+Pre-padding is the default.
+
+# Arguments
+    sequences: List of lists, where each element is a sequence.
+    maxlen: Int, maximum length of all sequences.
+    dtype: Type of the output sequences.
+        To pad sequences with variable length strings, you can use `object`.
+    padding: String, 'pre' or 'post':
+        pad either before or after each sequence.
+    truncating: String, 'pre' or 'post':
+        remove values from sequences larger than
+        `maxlen`, either at the beginning or at the end of the sequences.
+    value: Float or String, padding value.
+
+# Returns
+    x: Numpy array with shape `(len(sequences), maxlen)`
+
+# Raises
+    ValueError: In case of invalid values for `truncating` or `padding`,
+        or in case of invalid shape for a `sequences` entry.
+"""
+```
+
+## sklearn.model_selection.train_test_split
+
+```python
+"""将数组或矩阵拆分为随机训练和测试子集
+
+包装输入验证和``next(ShuffleSplit().split(X, y))``的快速实用程序, 以及, 应用程序将数据输入到单个调用中，以便在oneliner中拆分（以及可选地对子采样）数据。
+
+Read more in the :ref:`User Guide <cross_validation>`.
+
+Parameters
+----------
+*arrays : sequence of indexables with same length / shape[0]
+    Allowed inputs are lists, numpy arrays, scipy-sparse
+    matrices or pandas dataframes.
+
+test_size : float, int or None, optional (default=None)
+    If float, should be between 0.0 and 1.0 and represent the proportion
+    of the dataset to include in the test split. If int, represents the
+    absolute number of test samples. If None, the value is set to the
+    complement of the train size. If ``train_size`` is also None, it will
+    be set to 0.25.
+
+train_size : float, int, or None, (default=None)
+    If float, should be between 0.0 and 1.0 and represent the
+    proportion of the dataset to include in the train split. If
+    int, represents the absolute number of train samples. If None,
+    the value is automatically set to the complement of the test size.
+
+random_state : int, RandomState instance or None, optional (default=None)
+    If int, random_state is the seed used by the random number generator;
+    If RandomState instance, random_state is the random number generator;
+    If None, the random number generator is the RandomState instance used
+    by `np.random`.
+
+shuffle : boolean, optional (default=True)
+    Whether or not to shuffle the data before splitting. If shuffle=False
+    then stratify must be None.
+
+stratify : array-like or None (default=None)
+    If not None, data is split in a stratified fashion, using this as
+    the class labels.
+
+Returns
+-------
+splitting : list, length=2 * len(arrays)
+    List containing train-test split of inputs.
+
+    .. versionadded:: 0.16
+        If the input is sparse, the output will be a
+        ``scipy.sparse.csr_matrix``. Else, output type is the same as the
+        input type.
+"""
+```
+Examples
+
+```python
+>>> import numpy as np
+>>> from sklearn.model_selection import train_test_split
+>>> X, y = np.arange(10).reshape((5, 2)), range(5)
+>>> X
+array([[0, 1],
+        [2, 3],
+        [4, 5],
+        [6, 7],
+        [8, 9]])
+>>> list(y)
+[0, 1, 2, 3, 4]
+
+>>> X_train, X_test, y_train, y_test = train_test_split(
+...     X, y, test_size=0.33, random_state=42)
+...
+>>> X_train
+array([[4, 5],
+       [0, 1],
+       [6, 7]])
+>>> y_train
+[2, 0, 3]
+>>> X_test
+array([[2, 3],
+       [8, 9]])
+>>> y_test
+[1, 4]
+
+>>> train_test_split(y, shuffle=False)
+[[0, 1, 2], [3, 4]]
+```
+
+## tf.data.Dataset.from_tensor_slices(tensors)
+
+```python
+"""创建一个“dataset”，其元素是给定张量的slices。
+
+给定的tensor沿其第一维被sliced。 此操作将保留输入tensor的结构，删除每个tensor的第一维并将其用作数据集维。 所有输入tensor的第一维必须相同。
+"""
+```
+example
+
+```python
+>>> # Slicing a 1D tensor produces scalar tensor elements.
+>>> dataset = tf.data.Dataset.from_tensor_slices([1, 2, 3])
+>>> list(dataset.as_numpy_iterator())
+[1, 2, 3]
+
+>>> # Slicing a 2D tensor produces 1D tensor elements.
+>>> dataset = tf.data.Dataset.from_tensor_slices([[1, 2], [3, 4]])
+>>> list(dataset.as_numpy_iterator())
+[array([1, 2], dtype=int32), array([3, 4], dtype=int32)]
+
+>>> # Slicing a tuple of 1D tensors produces tuple elements containing
+>>> # scalar tensors.
+>>> dataset = tf.data.Dataset.from_tensor_slices(([1, 2], [3, 4], [5, 6]))
+>>> list(dataset.as_numpy_iterator())
+[(1, 3, 5), (2, 4, 6)]
+
+>>> # Dictionary structure is also preserved.
+>>> dataset = tf.data.Dataset.from_tensor_slices({"a": [1, 2], "b": [3, 4]})
+>>> list(dataset.as_numpy_iterator()) == [{'a': 1, 'b': 3},
+...                                       {'a': 2, 'b': 4}]
+True
+
+>>> # Two tensors can be combined into one Dataset object.
+>>> features = tf.constant([[1, 3], [2, 1], [3, 3]]) # ==> 3x2 tensor
+>>> labels = tf.constant(['A', 'B', 'A']) # ==> 3x1 tensor
+>>> dataset = Dataset.from_tensor_slices((features, labels))
+>>> # Both the features and the labels tensors can be converted
+>>> # to a Dataset object separately and combined after.
+>>> features_dataset = Dataset.from_tensor_slices(features)
+>>> labels_dataset = Dataset.from_tensor_slices(labels)
+>>> dataset = Dataset.zip((features_dataset, labels_dataset))
+>>> # A batched feature and label set can be converted to a Dataset
+>>> # in similar fashion.
+>>> batched_features = tf.constant([[[1, 3], [2, 3]],
+...                                 [[2, 1], [1, 2]],
+...                                 [[3, 3], [3, 2]]], shape=(3, 2, 2))
+>>> batched_labels = tf.constant([['A', 'A'],
+...                               ['B', 'B'],
+...                               ['A', 'B']], shape=(3, 2, 1))
+>>> dataset = Dataset.from_tensor_slices((batched_features, batched_labels))
+>>> for element in dataset.as_numpy_iterator():
+...   print(element)
+(array([[1, 3],
+        [2, 3]], dtype=int32), array([[b'A'],
+        [b'A']], dtype=object))
+(array([[2, 1],
+        [1, 2]], dtype=int32), array([[b'B'],
+        [b'B']], dtype=object))
+(array([[3, 3],
+        [3, 2]], dtype=int32), array([[b'A'],
+        [b'B']], dtype=object))
+```
+
+```python
+"""
+Note that if `tensors` contains a NumPy array, and eager execution is not
+enabled, the values will be embedded in the graph as one or more
+`tf.constant` operations. For large datasets (> 1 GB), this can waste
+memory and run into byte limits of graph serialization. If `tensors`
+contains one or more large NumPy arrays, consider the alternative described
+in [this guide](
+https://tensorflow.org/guide/data#consuming_numpy_arrays).
+
+Args:
+    tensors: A dataset element, with each component having the same size in
+    the first dimension.
+
+Returns:
+    Dataset: A `Dataset`.
+"""
+
+```
+
+## tf.keras.layers.Embedding()
+
+```python
+"""Turns positive integers (indexes) into dense vectors of fixed size.
+
+e.g. `[[4], [20]] -> [[0.25, 0.1], [0.6, -0.2]]`
+
+This layer can only be used as the first layer in a model.
+
+Arguments:
+    input_dim: int > 0. Size of the vocabulary,
+      i.e. maximum integer index + 1.
+    output_dim: int >= 0. Dimension of the dense embedding.
+    embeddings_initializer: Initializer for the `embeddings` matrix.
+    embeddings_regularizer: Regularizer function applied to
+      the `embeddings` matrix.
+    embeddings_constraint: Constraint function applied to
+      the `embeddings` matrix.
+    mask_zero: Whether or not the input value 0 is a special "padding"
+      value that should be masked out.
+      This is useful when using recurrent layers
+      which may take variable length input.
+      If this is `True` then all subsequent layers
+      in the model need to support masking or an exception will be raised.
+      If mask_zero is set to True, as a consequence, index 0 cannot be
+      used in the vocabulary (input_dim should equal size of
+      vocabulary + 1).
+    input_length: Length of input sequences, when it is constant.
+      This argument is required if you are going to connect
+      `Flatten` then `Dense` layers upstream
+      (without it, the shape of the dense outputs cannot be computed).
+
+  Input shape:
+    2D tensor with shape: `(batch_size, input_length)`.
+
+  Output shape:
+    3D tensor with shape: `(batch_size, input_length, output_dim)`.
+"""
+```
+## 
+
+```python
+
+
+```
+
+## 
+
+```python
+Arguments:
+    units: 正整数，输出空间的维数。
+    recurrent_initializer: `recurrent_kernel`权重矩阵的初始值设定项，用于递归状态的线性变换。默认值：`orthogonal`.
+    return_sequences: 布尔值。是返回输出序列中的最后一个输出，还是返回完整序列。默认值：“False”。
+    return_state: 布尔值。 除输出外，是否返回最后一个状态。 默认值：“ False”。
+    activation: Activation function to use.
+      Default: hyperbolic tangent (`tanh`).
+      If you pass `None`, no activation is applied
+      (ie. "linear" activation: `a(x) = x`).
+    recurrent_activation: Activation function to use
+      for the recurrent step.
+      Default: sigmoid (`sigmoid`).
+      If you pass `None`, no activation is applied
+      (ie. "linear" activation: `a(x) = x`).
+    use_bias: Boolean, (default `True`), whether the layer uses a bias vector.
+    kernel_initializer: Initializer for the `kernel` weights matrix,
+      used for the linear transformation of the inputs. Default:
+      `glorot_uniform`.
+    bias_initializer: Initializer for the bias vector. Default: `zeros`.
+    kernel_regularizer: Regularizer function applied to the `kernel` weights
+      matrix. Default: `None`.
+    recurrent_regularizer: Regularizer function applied to the
+      `recurrent_kernel` weights matrix. Default: `None`.
+    bias_regularizer: Regularizer function applied to the bias vector. Default:
+      `None`.
+    activity_regularizer: Regularizer function applied to the output of the
+      layer (its "activation"). Default: `None`.
+    kernel_constraint: Constraint function applied to the `kernel` weights
+      matrix. Default: `None`.
+    recurrent_constraint: Constraint function applied to the `recurrent_kernel`
+      weights matrix. Default: `None`.
+    bias_constraint: Constraint function applied to the bias vector. Default:
+      `None`.
+    dropout: Float between 0 and 1. Fraction of the units to drop for the linear
+      transformation of the inputs. Default: 0.
+    recurrent_dropout: Float between 0 and 1. Fraction of the units to drop for
+      the linear transformation of the recurrent state. Default: 0.
+    implementation: Implementation mode, either 1 or 2.
+      Mode 1 will structure its operations as a larger number of
+      smaller dot products and additions, whereas mode 2 will
+      batch them into fewer, larger operations. These modes will
+      have different performance profiles on different hardware and
+      for different applications. Default: 2.
+    go_backwards: Boolean (default `False`).
+      If True, process the input sequence backwards and return the
+      reversed sequence.
+    stateful: Boolean (default False). If True, the last state
+      for each sample at index i in a batch will be used as initial
+      state for the sample of index i in the following batch.
+    unroll: Boolean (default False).
+      If True, the network will be unrolled,
+      else a symbolic loop will be used.
+      Unrolling can speed-up a RNN,
+      although it tends to be more memory-intensive.
+      Unrolling is only suitable for short sequences.
+    time_major: The shape format of the `inputs` and `outputs` tensors.
+      If True, the inputs and outputs will be in shape
+      `[timesteps, batch, feature]`, whereas in the False case, it will be
+      `[batch, timesteps, feature]`. Using `time_major = True` is a bit more
+      efficient because it avoids transposes at the beginning and end of the
+      RNN calculation. However, most TensorFlow data is batch-major, so by
+      default this function accepts input and emits output in batch-major
+      form.
+    reset_after: GRU convention (whether to apply reset gate after or
+      before matrix multiplication). False = "before",
+      True = "after" (default and CuDNN compatible).
+
+```
+
+## tf.zeros()
+
+```python
+"""Creates a tensor with all elements set to zero.
+
+This operation returns a tensor of type `dtype` with shape `shape` and
+all elements set to zero.
+
+>>> tf.zeros([3, 4], tf.int32)
+<tf.Tensor: shape=(3, 4), dtype=int32, numpy=
+array([[0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]], dtype=int32)>
+
+Args:
+shape: A `list` of integers, a `tuple` of integers, or
+    a 1-D `Tensor` of type `int32`.
+dtype: The DType of an element in the resulting `Tensor`.
+name: Optional string. A name for the operation.
+
+Returns:
+A `Tensor` with all elements set to zero.
+"""
+
+```
+
+## tf.keras.layers.layer()
+
+```python
+"""基础层类。 这是所有层都继承的类
+
+  一层是一类，用于实现常见的神经网络操作，例如卷积，批处理规范等。这些操作需要管理权重，丢失，更新和层间连接。
+
+  用户将只实例化一个层，然后将其视为可调用层。
+
+  我们建议`Layer`的后代实现以下方法：
+
+  * `__init__()`: Save configuration in member variables
+  * `build()`: Called once from `__call__`, when we know the shapes of inputs
+    and `dtype`. Should have the calls to `add_weight()`, and then
+    call the super's `build()` (which sets `self.built = True`, which is
+    nice in case the user wants to call `build()` manually before the
+    first `__call__`).
+  * `call()`: Called in `__call__` after making sure `build()` has been called
+    once. Should actually perform the logic of applying the layer to the
+    input tensors (which should be passed in as the first argument).
+
+  Arguments:
+    trainable: Boolean, whether the layer's variables should be trainable.
+    name: String name of the layer.
+    dtype: The dtype of the layer's computations and weights (default of
+      `None` means use `tf.keras.backend.floatx` in TensorFlow 2, or the type
+      of the first input in TensorFlow 1).
+    dynamic: Set this to `True` if your layer should only be run eagerly, and
+      should not be used to generate a static computation graph.
+      This would be the case for a Tree-RNN or a recursive network,
+      for example, or generally for any layer that manipulates tensors
+      using Python control flow. If `False`, we assume that the layer can
+      safely be used to generate a static computation graph.
+
+```
+
+## tf.expand_dims(input, axis, name=None)
+
+```python
+"""返回在index`axis`处插入附加维度的张量。
+
+  Given a tensor `input`, this operation inserts a dimension of size 1 at the
+  dimension index `axis` of `input`'s shape. The dimension index `axis` starts
+  at zero; if you specify a negative number for `axis` it is counted backward
+  from the end.
+
+  This operation is useful if you want to add a batch dimension to a single
+  element. For example, if you have a single image of shape `[height, width,
+  channels]`, you can make it a batch of one image with `expand_dims(image, 0)`,
+  which will make the shape `[1, height, width, channels]`.
+```
+Examples:
+```python
+>>> t = [[1, 2, 3],[4, 5, 6]] # shape [2, 3]
+>>> tf.expand_dims(t, 0)
+<tf.Tensor: shape=(1, 2, 3), dtype=int32, numpy=
+array([[[1, 2, 3],
+        [4, 5, 6]]], dtype=int32)>
+```
+```python
+>>> tf.expand_dims(t, 1)
+<tf.Tensor: shape=(2, 1, 3), dtype=int32, numpy=
+array([[[1, 2, 3]],
+        [[4, 5, 6]]], dtype=int32)>
+```
+```python
+>>> tf.expand_dims(t, 2)
+<tf.Tensor: shape=(2, 3, 1), dtype=int32, numpy=
+array([[[1],
+        [2],
+        [3]],
+        [[4],
+        [5],
+        [6]]], dtype=int32)>
+```
+```python
+>>> tf.expand_dims(t, -1) # Last dimension index. In this case, same as 2.
+<tf.Tensor: shape=(2, 3, 1), dtype=int32, numpy=
+array([[[1],
+        [2],
+        [3]],
+        [[4],
+        [5],
+        [6]]], dtype=int32)>
+```
+
+## 
+
+```python
+
+
+```
+
+## 
+
+```python
+
+
+```
 
 ## 
 
@@ -220,3 +685,25 @@ Arguments
 
 
 ```
+
+## 
+
+```python
+
+
+```
+
+## 
+
+```python
+
+
+```
+
+## 
+
+```python
+
+
+```
+
