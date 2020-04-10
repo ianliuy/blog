@@ -16,3 +16,7 @@ Make a mark
 7. [screen增删查改](https://github.com/yiyangianliu/blog/blob/master/contents/screen%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9.md)
 
 8. [kaggle tutorial](https://github.com/yiyangianliu/blog/blob/master/contents/kaggle%20tutorial.md)
+
+9. [kaggle房价预测案例-base](https://github.com/yiyangiliu/blog/blob/master/contents/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%E6%A1%88%E4%BE%8B-base.md) & [kaggle房价预测案例-advanced](https://github.com/yiyangiliu/blog/blob/master/contents/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%E6%A1%88%E4%BE%8B-advanced.md)
+
+10. [Neural Machine Translation-tutorial](https://github.com/yiyangiliu/blog/blob/master/contents/Neural%20Machine%20Translation-tutorial.md)
