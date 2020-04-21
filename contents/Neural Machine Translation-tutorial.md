@@ -706,19 +706,368 @@ array([[[1],
 
 ```
 
-## 
+## Models: Composing layers
 
+https://www.tensorflow.org/tutorials/customization/custom_layers#models_composing_layers
+
+Many interesting layer-like things in machine learning models are implemented by composing existing layers. For example, each residual block in a resnet is a composition of convolutions, batch normalizations, and a shortcut. Layers can be nested inside other layers.
+
+Typically you inherit from *keras.Model* when you need the model methods like: `Model.fit`, `Model.evaluate`, and `Model.save` (see Custom Keras layers and models for details).
+
+One other feature provided by *keras.Model* (instead of *keras.layers.Layer*) is that in addition to tracking variables, a keras.Model also tracks its internal layers, making them easier to inspect.
+
+```python
+class ResnetIdentityBlock(tf.keras.Model):
+  def __init__(self, kernel_size, filters):
+    super(ResnetIdentityBlock, self).__init__(name='')
+    filters1, filters2, filters3 = filters
+
+    self.conv2a = tf.keras.layers.Conv2D(filters1, (1, 1))
+    self.bn2a = tf.keras.layers.BatchNormalization()
+
+    self.conv2b = tf.keras.layers.Conv2D(filters2, kernel_size, padding='same')
+    self.bn2b = tf.keras.layers.BatchNormalization()
+
+    self.conv2c = tf.keras.layers.Conv2D(filters3, (1, 1))
+    self.bn2c = tf.keras.layers.BatchNormalization()
+
+  def call(self, input_tensor, training=False):
+    x = self.conv2a(input_tensor)
+    x = self.bn2a(x, training=training)
+    x = tf.nn.relu(x)
+
+    x = self.conv2b(x)
+    x = self.bn2b(x, training=training)
+    x = tf.nn.relu(x)
+
+    x = self.conv2c(x)
+    x = self.bn2c(x, training=training)
+
+    x += input_tensor
+    return tf.nn.relu(x)
+
+
+block = ResnetIdentityBlock(1, [1, 2, 3])
+
+```
+
+## keras.layers.Embedding(layers.layer):
+
+```python
+"""
+将正整数(indexs)转化为fixed size的密集向量
+这个过程叫embedding lookup
+e.g. `[[4], [20]] -> [[0.25, 0.1], [0.6, -0.2]]`这里的4 20可能是两个字经过tokenize的结果idx, 比如"你", "我"
+[0.25, 0.1], [0.6, -0.2]就是"你"、"我"对应的向量
+This layer can only be used as the first layer in a model.
+"""
+  def __init__(self,
+               input_dim,
+               output_dim,
+               embeddings_initializer='uniform',
+               embeddings_regularizer=None,
+               activity_regularizer=None,
+               embeddings_constraint=None,
+               mask_zero=False,
+               input_length=None,
+               **kwargs):
+"""
+Arguments:
+    input_dim: int > 0. Size of the vocabulary,
+      i.e. maximum integer index + 1.
+    output_dim: int >= 0. dense embedding的dimension，自然语言处理里就是词向量.
+    input_length: Length of input sequences, when it is constant.
+      This argument is required if you are going to connect
+      `Flatten` then `Dense` layers upstream
+      (without it, the shape of the dense outputs cannot be computed).
+    embeddings_initializer: Initializer for the `embeddings` matrix.
+    embeddings_regularizer: Regularizer function applied to
+      the `embeddings` matrix.
+    embeddings_constraint: Constraint function applied to
+      the `embeddings` matrix.
+    mask_zero: Whether or not the input value 0 is a special "padding"
+      value that should be masked out.
+      This is useful when using recurrent layers
+      which may take variable length input.
+      If this is `True` then all subsequent layers
+      in the model need to support masking or an exception will be raised.
+      If mask_zero is set to True, as a consequence, index 0 cannot be
+      used in the vocabulary (input_dim should equal size of
+      vocabulary + 1).
+    input_length: Length of input sequences, when it is constant.
+      This argument is required if you are going to connect
+      `Flatten` then `Dense` layers upstream
+      (without it, the shape of the dense outputs cannot be computed).
+
+  Input shape:
+    2D tensor with shape: `(batch_size, input_length)`.
+
+  Output shape:
+    3D tensor with shape: `(batch_size, input_length, output_dim)`.
+"""
+```
+Examples
+```python
+  model = Sequential()
+  model.add(Embedding(input_dim=1000, output_dim=64, input_length=10))
+  # the model will take as input an integer matrix of size (batch,
+  # input_length).
+  # the largest integer (i.e. word index) in the input should be no larger
+  # than 999 (vocabulary size).
+  # now model.output_shape == (None, 10, 64), where None is the batch
+  # dimension.
+
+  input_array = np.random.randint(1000, size=(32, 10))
+
+  model.compile('rmsprop', 'mse')
+  output_array = model.predict(input_array)
+  assert output_array.shape == (32, 10, 64)
+  ```
+## tf.keras.layers.GRU
+
+```python
+self.gru = tf.keras.layers.GRU(self.enc_units,
+                                return_sequences=True,
+                                return_state=True,
+                                recurrent_initializer='glorot_uniform')
+"""Gated Recurrent Unit - Cho et al. 2014.
+
+"""
+def __init__(self,
+              units,
+              return_sequences=False,
+              return_state=False,
+              recurrent_initializer='orthogonal',
+              activation='tanh',
+              recurrent_activation='sigmoid',
+              use_bias=True,
+              kernel_initializer='glorot_uniform',
+              bias_initializer='zeros',
+              kernel_regularizer=None,
+              recurrent_regularizer=None,
+              bias_regularizer=None,
+              activity_regularizer=None,
+              kernel_constraint=None,
+              recurrent_constraint=None,
+              bias_constraint=None,
+              dropout=0.,
+              recurrent_dropout=0.,
+              implementation=2,
+              go_backwards=False,
+              stateful=False,
+              unroll=False,
+              time_major=False,
+              reset_after=True,
+              **kwargs):
+"""
+  Arguments:
+    units: Positive integer, output space的dimensionality.
+    return_sequences: Boolean. 是返回输出sequence中的最后一个输出，还是返回完整sequence. Default: `False`.
+    return_state: Boolean. 除输出外是否返回最后一个state.
+    recurrent_initializer: "recurrent kernel"的initializer，用于recurrent state的linear transformation. Default: `orthogonal正交的`.
+    activation: Activation function to use.
+      Default: hyperbolic tangent双曲正切 (`tanh`).
+      If you pass `None`, no activation is applied
+      (ie. "linear" activation: `a(x) = x`).
+    recurrent_activation: Activation function to use
+      for the recurrent step.
+      Default: sigmoid (`sigmoid`).
+      If you pass `None`, no activation is applied
+      (ie. "linear" activation: `a(x) = x`).
+    use_bias: Boolean, (default `True`), whether the layer uses a bias vector.
+    kernel_initializer: Initializer for the `kernel` weights matrix,
+      used for the linear transformation of the inputs. Default:
+      `glorot_uniform`.
+    bias_initializer: Initializer for the bias vector. Default: `zeros`.
+    kernel_regularizer: Regularizer function applied to the `kernel` weights
+      matrix. Default: `None`.
+    recurrent_regularizer: Regularizer function applied to the
+      `recurrent_kernel` weights matrix. Default: `None`.
+    bias_regularizer: Regularizer function applied to the bias vector. Default:
+      `None`.
+    activity_regularizer: Regularizer function applied to the output of the
+      layer (its "activation"). Default: `None`.
+    kernel_constraint: Constraint function applied to the `kernel` weights
+      matrix. Default: `None`.
+    recurrent_constraint: Constraint function applied to the `recurrent_kernel`
+      weights matrix. Default: `None`.
+    bias_constraint: Constraint function applied to the bias vector. Default:
+      `None`.
+    dropout: Float between 0 and 1. Fraction of the units to drop for the linear
+      transformation of the inputs. Default: 0.
+    recurrent_dropout: Float between 0 and 1. Fraction of the units to drop for
+      the linear transformation of the recurrent state. Default: 0.
+    implementation: Implementation mode, either 1 or 2.
+      Mode 1 will structure its operations as a larger number of
+      smaller dot products and additions, whereas mode 2 will
+      batch them into fewer, larger operations. These modes will
+      have different performance profiles on different hardware and
+      for different applications. Default: 2.
+      output. Default: `False`.
+    go_backwards: Boolean (default `False`).
+      If True, process the input sequence backwards and return the
+      reversed sequence.
+    stateful: Boolean (default False). If True, the last state
+      for each sample at index i in a batch will be used as initial
+      state for the sample of index i in the following batch.
+    unroll: Boolean (default False).
+      If True, the network will be unrolled,
+      else a symbolic loop will be used.
+      Unrolling can speed-up a RNN,
+      although it tends to be more memory-intensive.
+      Unrolling is only suitable for short sequences.
+    time_major: The shape format of the `inputs` and `outputs` tensors.
+      If True, the inputs and outputs will be in shape
+      `[timesteps, batch, feature]`, whereas in the False case, it will be
+      `[batch, timesteps, feature]`. Using `time_major = True` is a bit more
+      efficient because it avoids transposes at the beginning and end of the
+      RNN calculation. However, most TensorFlow data is batch-major, so by
+      default this function accepts input and emits output in batch-major
+      form.
+    reset_after: GRU convention (whether to apply reset gate after or
+      before matrix multiplication). False = "before",
+      True = "after" (default and CuDNN compatible).
+
+  Call arguments:
+    inputs: A 3D tensor, with shape `[batch, timesteps, feature]`.
+    mask: Binary tensor of shape `[samples, timesteps]` indicating whether
+      a given timestep should be masked  (optional, defaults to `None`).
+    training: Python boolean indicating whether the layer should behave in
+      training mode or in inference mode. This argument is passed to the cell
+      when calling it. This is only relevant if `dropout` or
+      `recurrent_dropout` is used  (optional, defaults to `None`).
+    initial_state: List of initial state tensors to be passed to the first
+      call of the cell  (optional, defaults to `None` which causes creation
+      of zero-filled initial state tensors).
+"""
+```
+Examples:
+```python
+inputs = np.random.random([32, 10, 8]).astype(np.float32)
+gru = tf.keras.layers.GRU(4)
+
+output = gru(inputs)  # The output has shape `[32, 4]`.
+
+gru = tf.keras.layers.GRU(4, return_sequences=True, return_state=True)
+
+# whole_sequence_output has shape `[32, 10, 4]`.
+# final_state has shape `[32, 4]`.
+whole_sequence_output, final_state = gru(inputs)
+```
+
+## keras.initializers.glorot_uniform(seed=None)
+
+```python
+"""
+Glorot uniform initializer, also called Xavier uniform initializer.
+
+It draws samples from a uniform distribution within [-limit, limit] where limit is sqrt(6 / (fan_in + fan_out)) where fan_in是weight tensor中input units的数量，fan_out是weight tensor中output units的数量.
+
+Arguments
+
+seed: A Python integer. Used to seed(为（随机生成器）设定种子) the random generator.
+Returns
+
+An initializer.
+
+References
+
+Understanding the difficulty of training deep feedforward neural networks
+"""
+```
+
+## 全局变量
+
+```python
+vocab_inp_size = len(inp_lang.word_index)+1
+# 源语言词表的总数
+vocab_tar_size = len(targ_lang.word_index)+1
+# 目标语言词表的总数
+embedding_dim
+# 词向量长度
+enc_units
+# GRU输出向量的长度
+batch_sz
+
+```
+
+## 一点想法
+
+看了好多博客, 讲解LSTM和GRU同时还有recurrent neural network的, 还是不太懂其中的原理和细节
+
+只是泛泛知道那里是相加相乘, 哪里是sigmoid哪里是tanh, 真理解还得自己写写程序 复现一个cell才行
+
+## keras.layers.GRUCell(DropoutRNNCellMixin, Layer)
+
+from:
+> Tensorflow_core/python/keras/layers/recurrent.py
+
+source code: https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/keras/layers/recurrent.py#L1648
 ```python
 
 
 ```
 
-## 
+## 新建class里的call函数,见tensorflow documentation
+https://www.tensorflow.org/tutorials/customization/custom_layers#implementing_custom_layers
+
+The best way to implement your own layer is extending the tf.keras.Layer class and implementing:
+
+`__init__` , where you can do all input-independent initialization
+
+`build`, where you know the shapes of the input tensors and can do the rest of the initialization
+
+`call`, where you do the forward computation
+```python
+class MyDenseLayer(tf.keras.layers.Layer):
+  def __init__(self, num_outputs):
+    super(MyDenseLayer, self).__init__()
+    self.num_outputs = num_outputs
+
+  def build(self, input_shape):
+    self.kernel = self.add_weight("kernel",
+                                  shape=[int(input_shape[-1]),
+                                         self.num_outputs])
+
+  def call(self, input):
+    return tf.matmul(input, self.kernel)
+
+layer = MyDenseLayer(10)
+```
+还有另一个tutorial, 这个讲的更细一点, 是advanced:
+
+https://www.tensorflow.org/guide/keras/custom_layers_and_models#best_practice_deferring_weight_creation_until_the_shape_of_the_inputs_is_known
+
+In many cases, you may not know in advance the size of your inputs, and you would like to lazily create weights when that value becomes known, some time after instantiating the layer.
+
+In the `Keras` API, we recommend creating layer weights in the `build(inputs_shape)` method of your layer. Like this:
 
 ```python
+class Linear(layers.Layer):
 
+  def __init__(self, units=32):
+    super(Linear, self).__init__()
+    self.units = units
+
+  def build(self, input_shape):
+    self.w = self.add_weight(shape=(input_shape[-1], self.units),
+                             initializer='random_normal',
+                             trainable=True)
+    self.b = self.add_weight(shape=(self.units,),
+                             initializer='random_normal',
+                             trainable=True)
+
+  def call(self, inputs):
+    return tf.matmul(inputs, self.w) + self.b
+```
+The `__call__` method of your layer will **automatically** run `build` **the first time it is called**. You now have a layer that's lazy and easy to use:
+```python
+linear_layer = Linear(32)  # At instantiation, we don't know on what inputs this is going to get called
+y = linear_layer(x)  # The layer's weights are created dynamically the first time the layer is called
 
 ```
+
+下面看GRUcell类的实现:
 
 ## 
 
