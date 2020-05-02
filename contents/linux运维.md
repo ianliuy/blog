@@ -9,7 +9,7 @@ pip insatll ipykernel
 2. 将ipykernel注册，命名
 
 ```bash
-python -m ipykernel --user(optional) --name XXX
+python -m ipykernel install --user(optional) --name XXX
 ```
 
 3. 相关命令：查看kernelspce里有哪些kernel
