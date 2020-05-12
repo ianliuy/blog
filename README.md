@@ -20,3 +20,5 @@ Make a mark
 9. [kaggle房价预测案例-base](https://github.com/yiyangiliu/blog/blob/master/contents/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%E6%A1%88%E4%BE%8B-base.md) & [kaggle房价预测案例-advanced](https://github.com/yiyangiliu/blog/blob/master/contents/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%E6%A1%88%E4%BE%8B-advanced.md)
 
 10. [Neural Machine Translation-tutorial](https://github.com/yiyangiliu/blog/blob/master/contents/Neural%20Machine%20Translation-tutorial.md)
+
+11. [An analysis on RoBERTa's trainable parameters, RoBERTa各个层的参数理解&可训练参数（3亿）的定量分析](https://github.com/yiyangiliu/blog/blob/master/contents/bert%E5%90%84%E4%B8%AA%E5%B1%82%E7%9A%84%E5%8F%82%E6%95%B0%E7%90%86%E8%A7%A3.md)
