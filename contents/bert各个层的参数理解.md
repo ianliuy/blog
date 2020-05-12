@@ -1,5 +1,9 @@
 # bert各个层的参数理解
 
+model来自: [RoBERTa-wwm-ext-large](https://github.com/ymcui/Chinese-BERT-wwm)
+
+用来加载模型的框架是[bert4keras](https://github.com/bojone/bert4keras)
+
 ## An overview of Embedding
 
 ![image 1](https://raw.githubusercontent.com/yiyangiliu/blog/master/resources/Clip_20200512_211853.png)
@@ -145,4 +149,6 @@ transformer: 4,198,400(Multi-Head Self Attention) + 2048(Layer Normalization) + 
 
 ## Total trainable variables
 
-22,163,456‬ + 12,596,224 * 24 = 324,472,832‬
+22,163,456‬ + 12,596,224 * 24 = **324,472,832‬**
+
+![image 3](https://raw.githubusercontent.com/yiyangiliu/blog/master/resources/Clip_20200512_213038.png)
