@@ -1,5 +1,13 @@
 # bert各个层的参数理解
 
+## An overview of Embedding
+
+![image 1](https://raw.githubusercontent.com/yiyangiliu/blog/master/resources/Clip_20200512_211853.png)
+
+## An overview of Transformer
+![image 2](https://raw.githubusercontent.com/yiyangiliu/blog/master/resources/Clip_20200512_211919.png)
+
+## Getting started
 通过tokenize，将两个句子转化成了token_ids和segment_ids。得到的方式类似于：
 
 ```python
