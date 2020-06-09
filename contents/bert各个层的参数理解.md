@@ -1,4 +1,4 @@
-# bert各个层的参数理解
+# An analysis on RoBERTa's trainable parameters, RoBERTa各个层的参数理解&可训练参数（3亿）的定量分析
 
 model来自: [RoBERTa-wwm-ext-large](https://github.com/ymcui/Chinese-BERT-wwm)
 
