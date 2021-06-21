@@ -1,4 +1,4 @@
-# kaggle房价预测案例-base
+# kaggle-house-price-forecasting-competition-advanced
 
 > reference: https://www.kaggle.com/c/house-prices-advanced-regression-techniques
 
